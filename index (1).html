@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 澳門日系動漫風旅遊行程</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React & ReactDOM UMD -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- Babel Standalone for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const IconSparkles = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+    );
+    const IconMapPin = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    );
+    const IconUtensils = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+    );
+    const IconCamera = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    );
+    const IconShoppingBag = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+    );
+    const IconBuilding = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+    );
+    const IconBus = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7h8m-8 4h8m-9 8h10M5 3h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+    );
+    const IconClock = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    );
+    const IconNavigation = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+    );
+    const IconExternalLink = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    );
+    const IconCheck = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+    );
+    const IconSearch = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    );
+    const IconChevronDown = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    );
+    const IconChevronUp = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7"/></svg>
+    );
+    const IconTrash2 = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+    );
+    const IconAward = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    );
+    const IconInfo = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    );
+    const IconCalendar = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    );
+    const IconSun = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+    );
+    const IconCoffee = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3m4-3v3m4-3v3"/></svg>
+    );
+    const IconBookmarkCheck = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+    );
+    const IconMap = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+    );
+    const IconX = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    );
+    const IconPlus = ({ className = "w-4 h-4" }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/></svg>
+    );
+
+    const INITIAL_ITINERARY = {
+      tripTitle: "2026 澳門動漫風漫遊之旅",
+      subtitle: "中西合璧古蹟遺產、奢華金光大道與葡式美食巡禮",
+      dates: "2026/11/26 - 2026/11/28",
+      durationDays: 3,
+      destination: "澳門 (Macau)",
+      weather: "22°C 晴朗舒適",
+      currency: "澳門幣 (MOP) / 港幣 (HKD)",
+      pocketFoods: [
+        { id: "pf-1", name: "澤賢記", desc: "必吃百年老字號蛋球仔 (葡撻/黃金流沙口味)", checked: false, location: "澳門官也街" },
+        { id: "pf-2", name: "檸檬車露", desc: "米其林推薦手作義式冰淇淋，清爽檸檬特調", checked: false, location: "澳門主教巷" },
+        { id: "pf-3", name: "義順鮮奶", desc: "招牌雙皮燉奶、薑汁撞奶，濃郁奶香入口即化", checked: false, location: "澳門新馬路" },
+        { id: "pf-4", name: "Goat baker", desc: "超人氣花朵千層可頌、奶蓋起司牛角包", checked: false, location: "澳門高士德" },
+        { id: "pf-5", name: "八目蛋塔", desc: "新晉極致酥皮葡式蛋撻、手沖精品咖啡", checked: false, location: "澳門氹仔舊城區" },
+        { id: "pf-6", name: "新鴻發", desc: "超厚切法蘭西多士、豬扒菠蘿包", checked: false, location: "澳門高士德" },
+        { id: "pf-7", name: "馬慶康", desc: "尊屬樽仔奶茶、阿華田波波脆西多士", checked: false, location: "澳門三盞燈" }
+      ],
+      days: [
+        {
+          dayNumber: 1,
+          date: "2026/11/26 (四)",
+          title: "Day 1：澳門半島歷史城區與古蹟漫步",
+          summary: "走訪世界文化遺產大三巴、議事亭前地，品嚐傳統葡式燒臘與瑪嘉烈蛋撻。",
+          events: [
+            { id: "d1-1", time: "10:30", title: "澳門國際機場", category: "Transport", location: "氹仔機場大樓", notes: "入境領取行李，準備澳門通或零錢乘車前往酒店。", completed: false },
+            { id: "d1-2", time: "12:03", title: "YOHO金銀島名勝世界酒店", category: "Hotel", location: "澳門南灣湖畔", notes: "辦理 Check-in 或寄放行李，欣賞南灣湖美景。", completed: false },
+            { id: "d1-3", time: "12:42", title: "瑪嘉烈蛋撻店", category: "Food", location: "澳門新馬路新良利大廈", notes: "正宗葡撻始祖之一，外酥內嫩、熱氣騰騰！", completed: false },
+            { id: "d1-4", time: "12:48", title: "陳光記燒臘店", category: "Food", location: "澳門羅保博士街", notes: "必吃馳名黑椒燒鴨與蜜汁叉燒，美味誘人。", completed: false },
+            { id: "d1-5", time: "13:23", title: "議事亭前地", category: "Spot", location: "澳門新馬路", notes: "波浪黑白碎石路與葡萄牙歐式彩色建築群。", completed: false },
+            { id: "d1-6", time: "13:47", title: "玫瑰聖母堂（板樟堂）", category: "Spot", location: "澳門板樟堂前地", notes: "亮麗鵝黃色巴洛克天主教教堂。", completed: false },
+            { id: "d1-7", time: "14:12", title: "戀愛巷 & 大三巴街", category: "Photo", location: "澳門大三巴斜巷旁", notes: "粉紅與淺黃相間夢幻巷弄，動漫打卡必拍景點。", completed: false },
+            { id: "d1-8", time: "14:44", title: "大三巴牌坊", category: "Spot", location: "澳門大三巴斜巷", notes: "澳門最著名世界文化遺產地標，聖保祿教堂遺址。", completed: false },
+            { id: "d1-9", time: "15:23", title: "大炮台", category: "Spot", location: "澳門大三巴牌坊旁", notes: "俯瞰整個澳門半島風光與城市天際線。", completed: false },
+            { id: "d1-10", time: "15:49", title: "澳門瘋堂斜巷", category: "Photo", location: "澳門望德堂區", notes: "充滿文青藝術氣息的葡式歐陸浪漫建築群。", completed: false },
+            { id: "d1-11", time: "16:28", title: "占西餅店", category: "Food", location: "澳門荷蘭園大馬路", notes: "懷舊老字號餅店，招牌古早味沙翁與核桃酥。", completed: false },
+            { id: "d1-12", time: "16:45", title: "澳門福隆新街", category: "Photo", location: "澳門福隆新街", notes: "保留完整的青磚紅瓦古老建築街道。", completed: false },
+            { id: "d1-13", time: "17:07", title: "老地方 Belos Tempos", category: "Food", location: "澳門福隆新街", notes: "正宗土生葡國菜餐廳，馬介休球與葡國雞。", completed: false },
+            { id: "d1-14", time: "18:27", title: "吉祥樹", category: "Spot", location: "永利澳門酒店大堂", notes: "黃金吉祥樹伴隨絢麗燈光與音樂升起。", completed: false },
+            { id: "d1-15", time: "19:34", title: "YOHO金銀島名勝世界酒店", category: "Hotel", location: "澳門南灣湖畔", notes: "返回酒店休息，欣賞南灣湖夜景。", completed: false }
+          ]
+        },
+        {
+          dayNumber: 2,
+          date: "2026/11/27 (五)",
+          title: "Day 2：路氹城金光大道與官也街美食巡禮",
+          summary: "穿梭威尼斯人、巴黎人與倫敦人奢華度假村，品嚐譽瓏軒與官也街道地小吃。",
+          events: [
+            { id: "d2-1", time: "08:00", title: "YOHO金銀島名勝世界酒店", category: "Hotel", location: "澳門南灣湖畔", notes: "晨起出發，開啟路氹城璀璨之旅。", completed: false },
+            { id: "d2-2", time: "08:27", title: "盛記白粥 (氹仔美景店)", category: "Food", location: "澳門氹仔美景花園", notes: "香滑豆漿白粥、懷舊蘿蔔糕與腸粉早餐。", completed: false },
+            { id: "d2-3", time: "09:34", title: "澳門威尼斯人", category: "Shopping", location: "澳門路氹連貫公路", notes: "大運河購物中心、人造藍天與貢多拉船。", completed: false },
+            { id: "d2-4", time: "10:17", title: "澳門巴黎人 (The Parisian)", category: "Photo", location: "澳門路氹城", notes: "1:2 縮小版艾菲爾巴黎鐵塔打卡拍照。", completed: false },
+            { id: "d2-5", time: "10:57", title: "路氹城金光大道", category: "Spot", location: "澳門Cotai Strip", notes: "澳門最繁華奢華酒店天際線群。", completed: false },
+            { id: "d2-6", time: "12:03", title: "澳門倫敦人購物中心", category: "Shopping", location: "澳門路氹城", notes: "Big Ben 大本鐘、大堂伊莉莎白塔與英倫街景。", completed: false },
+            { id: "d2-7", time: "12:47", title: "譽瓏軒", category: "Food", location: "澳門新濠天地", notes: "米其林三星極致粵菜！頂級燒味與精緻點心。", completed: false },
+            { id: "d2-8", time: "14:17", title: "龍環葡韻住宅式博物館", category: "Photo", location: "澳門氹仔海邊馬路", notes: "薄荷綠葡式建築與濕地公園，清新動漫畫風。", completed: false },
+            { id: "d2-9", time: "15:35", title: "大潭山瞭望台", category: "Photo", location: "澳門大潭山郊野公園", notes: "搭乘免費斜行電梯登頂，俯瞰金光大道黃昏全景。", completed: false },
+            { id: "d2-10", time: "16:54", title: "澳門官也街", category: "Food", location: "澳門氹仔舊城區", notes: "手信美食一條街！鋸記、晃記餅家、水蟹粥。", completed: false },
+            { id: "d2-11", time: "18:23", title: "美獅美高梅", category: "Spot", location: "澳門路氹城", notes: "視博廣場巨型LED天幕與藝術展覽。", completed: false },
+            { id: "d2-12", time: "18:51", title: "永利皇宮", category: "Photo", location: "澳門路氹城", notes: "免費搭乘觀光纜車環繞表演湖欣賞水舞噴泉！", completed: false },
+            { id: "d2-13", time: "20:30", title: "永利澳門", category: "Spot", location: "澳門半島", notes: "欣賞夜間噴泉與音樂水舞秀。", completed: false },
+            { id: "d2-14", time: "20:45", title: "YOHO金銀島名勝世界酒店", category: "Hotel", location: "澳門南灣湖畔", notes: "返回酒店休息。", completed: false }
+          ]
+        },
+        {
+          dayNumber: 3,
+          date: "2026/11/28 (六)",
+          title: "Day 3：路環漁村慢活、傳統茶餐廳與美好歸途",
+          summary: "漫步路環漁村感受南歐小鎮悠閒，品嚐創始安德魯蛋撻與老字號茶餐廳。",
+          events: [
+            { id: "d3-1", time: "08:00", title: "YOHO金銀島名勝世界酒店", category: "Hotel", location: "澳門南灣湖畔", notes: "辦理退房並寄放行李。", completed: false },
+            { id: "d3-2", time: "08:18", title: "文記咖啡美食", category: "Food", location: "澳門庇山耶街", notes: "馳名樽仔凍奶茶與花生醬西多士。", completed: false },
+            { id: "d3-3", time: "08:53", title: "南屏雅敘", category: "Food", location: "澳門十月初五日街", notes: "澳門歷史最悠久茶餐廳，必點厚蛋叉燒三文治！", completed: false },
+            { id: "d3-4", time: "09:25", title: "滄洲咖啡小食", category: "Food", location: "澳門十月初五日街", notes: "馳名新鮮蛋撻與香濃咖啡。", completed: false },
+            { id: "d3-5", time: "10:24", title: "聖方濟各堂", category: "Spot", location: "澳門路環計單奴街", notes: "鵝黃色巴洛克小教堂，韓劇《宮》取景地。", completed: false },
+            { id: "d3-6", time: "11:24", title: "路環圖書館", category: "Photo", location: "澳門路環市區", notes: "面海單層黃色葡式古蹟圖書館。", completed: false },
+            { id: "d3-7", time: "12:24", title: "安德魯花園咖啡店 (Lord Stow's Garden Café)", category: "Food", location: "澳門路環打纜街", notes: "葡撻鼻祖！熱騰騰現烤安德魯蛋撻與冷萃咖啡。", completed: false },
+            { id: "d3-8", time: "13:22", title: "黃枝記老舖", category: "Food", location: "澳門十月初五日街", notes: "竹升打麵創始老店，鮮蝦雲吞麵湯頭鮮美。", completed: false },
+            { id: "d3-9", time: "14:37", title: "YOHO金銀島名勝世界酒店", category: "Hotel", location: "澳門南灣湖畔", notes: "返回酒店取回寄放行李。", completed: false },
+            { id: "d3-10", time: "14:59", title: "美高梅金殿娛樂場", category: "Spot", location: "澳門外港新填海區", notes: "天幕廣場歐陸景致，品嚐免費珍珠奶茶與點心。", completed: false },
+            { id: "d3-11", time: "16:13", title: "澳門國際機場", category: "Transport", location: "氹仔機場大樓", notes: "辦理登機託運，採買最後手信，搭機返航。", completed: false }
+          ]
+        }
+      ]
+    };
+
+    const CATEGORY_CONFIG = {
+      All: { name: "全部類別", color: "bg-slate-900 text-white", badgeBg: "bg-slate-100 text-slate-700 border-slate-200", icon: IconMapPin },
+      Spot: { name: "經典景點", color: "bg-sky-500 text-white", badgeBg: "bg-sky-50 text-sky-700 border-sky-200", icon: IconMapPin },
+      Food: { name: "必吃美食", color: "bg-amber-500 text-white", badgeBg: "bg-amber-50 text-amber-700 border-amber-200", icon: IconUtensils },
+      Photo: { name: "美照打卡", color: "bg-rose-500 text-white", badgeBg: "bg-rose-50 text-rose-700 border-rose-200", icon: IconCamera },
+      Shopping: { name: "購物商場", color: "bg-purple-500 text-white", badgeBg: "bg-purple-50 text-purple-700 border-purple-200", icon: IconShoppingBag },
+      Hotel: { name: "飯店住宿", color: "bg-emerald-500 text-white", badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-200", icon: IconBuilding },
+      Transport: { name: "交通移動", color: "bg-blue-600 text-white", badgeBg: "bg-blue-50 text-blue-700 border-blue-200", icon: IconBus }
+    };
+
+    function App() {
+      const [itinerary, setItinerary] = useState(() => {
+        try {
+          const saved = localStorage.getItem('macau_light_itinerary_2026_html');
+          return saved ? JSON.parse(saved) : INITIAL_ITINERARY;
+        } catch (e) {
+          return INITIAL_ITINERARY;
+        }
+      });
+
+      const [activeTab, setActiveTab] = useState("day-1");
+      const [selectedCategory, setSelectedCategory] = useState("All");
+      const [searchQuery, setSearchQuery] = useState("");
+      const [expandedCards, setExpandedCards] = useState({});
+      const [pocketFoods, setPocketFoods] = useState(() => itinerary.pocketFoods || INITIAL_ITINERARY.pocketFoods);
+      const [newFoodName, setNewFoodName] = useState("");
+      const [newFoodDesc, setNewFoodDesc] = useState("");
+      const [showTipsModal, setShowTipsModal] = useState(false);
+
+      useEffect(() => {
+        try {
+          localStorage.setItem('macau_light_itinerary_2026_html', JSON.stringify({ ...itinerary, pocketFoods }));
+        } catch (e) {}
+      }, [itinerary, pocketFoods]);
+
+      const getGoogleMapsUrl = (spotName) => {
+        const query = `${spotName} 澳門`;
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+      };
+
+      const toggleEventCompleted = (dayNum, eventId) => {
+        setItinerary(prev => {
+          const newDays = prev.days.map(day => {
+            if (day.dayNumber === dayNum) {
+              return {
+                ...day,
+                events: day.events.map(ev => ev.id === eventId ? { ...ev, completed: !ev.completed } : ev)
+              };
+            }
+            return day;
+          });
+          return { ...prev, days: newDays };
+        });
+      };
+
+      const togglePocketFood = (id) => {
+        setPocketFoods(prev => prev.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
+      };
+
+      const handleAddPocketFood = (e) => {
+        e.preventDefault();
+        if (!newFoodName.trim()) return;
+        setPocketFoods([
+          ...pocketFoods,
+          { id: `pf-${Date.now()}`, name: newFoodName.trim(), desc: newFoodDesc.trim() || "澳門必吃精選美食", checked: false, location: "澳門" }
+        ]);
+        setNewFoodName("");
+        setNewFoodDesc("");
+      };
+
+      const deletePocketFood = (id, e) => {
+        e.stopPropagation();
+        setPocketFoods(prev => prev.filter(item => item.id !== id));
+      };
+
+      const toggleExpandCard = (id) => {
+        setExpandedCards(prev => ({ ...prev, [id]: !prev[id] }));
+      };
+
+      const allEvents = useMemo(() => itinerary.days.flatMap(d => d.events), [itinerary]);
+      const completedEvents = useMemo(() => allEvents.filter(e => e.completed), [allEvents]);
+      const progressPercent = allEvents.length ? Math.round((completedEvents.length / allEvents.length) * 100) : 0;
+
+      const currentDayIndex = activeTab.startsWith("day-") ? parseInt(activeTab.replace("day-", "")) - 1 : 0;
+      const currentDayData = itinerary.days[currentDayIndex] || itinerary.days[0];
+
+      const filteredEvents = useMemo(() => {
+        if (!currentDayData) return [];
+        return currentDayData.events.filter(ev => {
+          const matchCat = selectedCategory === "All" || ev.category === selectedCategory;
+          const matchSearch = ev.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                              ev.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              ev.notes.toLowerCase().includes(searchQuery.toLowerCase());
+          return matchCat && matchSearch;
+        });
+      }, [currentDayData, selectedCategory, searchQuery]);
+
+      return (
+        <div className="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans pb-16">
+          
+          {/* Header Banner */}
+          <header className="relative bg-gradient-to-br from-sky-100 via-rose-50 to-amber-50 border-b border-rose-100/60 overflow-hidden pt-6 pb-10 shadow-sm">
+            <div className="max-w-6xl mx-auto px-4 relative z-10">
+              
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                
+                {/* Anime Title Card */}
+                <div className="bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl border border-rose-200/80 shadow-md flex items-center gap-3.5">
+                  <div className="p-2.5 bg-gradient-to-tr from-rose-400 to-pink-400 text-white rounded-xl shadow-sm">
+                    <IconSparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-black tracking-tight bg-gradient-to-r from-rose-600 via-purple-600 to-sky-600 bg-clip-text text-transparent">
+                      {itinerary.tripTitle}
+                    </h1>
+                    <div className="inline-flex items-center gap-1 px-2.5 py-0.5 mt-1 bg-rose-100/80 rounded-full border border-rose-200 text-xs font-bold text-rose-700">
+                      <span>🎀 行程日期：</span>
+                      <span>{itinerary.dates}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Macau Travel Tips Modal Launcher */}
+                <button
+                  onClick={() => setShowTipsModal(true)}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl text-xs font-bold border border-slate-200 shadow-sm transition hover:shadow"
+                >
+                  <IconInfo className="w-4 h-4 text-sky-500" />
+                  <span>澳門旅遊貼士</span>
+                </button>
+              </div>
+
+              {/* Subtitle & Travel Meta Pills */}
+              <div className="max-w-3xl space-y-3">
+                <h2 className="text-2xl md:text-3xl font-black text-slate-800 leading-snug">
+                  {itinerary.subtitle}
+                </h2>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold pt-1">
+                  <span className="px-3 py-1 bg-sky-100/80 text-sky-800 rounded-xl border border-sky-200 flex items-center gap-1.5">
+                    <IconCalendar className="w-3.5 h-3.5 text-sky-600" /> 3 天行程
+                  </span>
+                  <span className="px-3 py-1 bg-amber-100/80 text-amber-800 rounded-xl border border-amber-200 flex items-center gap-1.5">
+                    <IconSun className="w-3.5 h-3.5 text-amber-600" /> {itinerary.weather}
+                  </span>
+                  <span className="px-3 py-1 bg-emerald-100/80 text-emerald-800 rounded-xl border border-emerald-200 flex items-center gap-1.5">
+                    <IconCoffee className="w-3.5 h-3.5 text-emerald-600" /> 幣值：{itinerary.currency}
+                  </span>
+                </div>
+
+                {/* Travel Progress Bar */}
+                <div className="pt-3 max-w-xl">
+                  <div className="flex justify-between items-center text-xs font-bold text-slate-600 mb-1.5">
+                    <span className="flex items-center gap-1.5">
+                      <IconBookmarkCheck className="w-4 h-4 text-rose-500" />
+                      打卡累積進度 ({completedEvents.length}/{allEvents.length})
+                    </span>
+                    <span className="text-rose-600 font-mono text-sm">{progressPercent}%</span>
+                  </div>
+                  <div className="w-full h-3 bg-white rounded-full overflow-hidden border border-slate-200 p-0.5">
+                    <div 
+                      className="h-full bg-gradient-to-r from-rose-400 via-purple-400 to-sky-400 rounded-full transition-all duration-500"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </header>
+
+          {}
+          <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* Left Section: Itinerary Timeline and Pocket Foods */}
+            <section className="lg:col-span-8 space-y-6">
+              
+              {/* Day & Pocket Food Switcher Tabs */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-slate-200">
+                {itinerary.days.map((day) => {
+                  const tabId = `day-${day.dayNumber}`;
+                  const isActive = activeTab === tabId;
+                  const dayCompletedCount = day.events.filter(e => e.completed).length;
+
+                  return (
+                    <button
+                      key={day.dayNumber}
+                      onClick={() => setActiveTab(tabId)}
+                      className={`flex flex-col px-5 py-3 rounded-2xl min-w-[130px] transition border text-left shrink-0 relative ${
+                        isActive 
+                          ? "bg-white border-rose-300 text-slate-900 shadow-md shadow-rose-100" 
+                          : "bg-white/60 border-slate-200 text-slate-500 hover:bg-white hover:text-slate-800"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full mb-0.5">
+                        <span className="text-[10px] font-extrabold uppercase tracking-widest text-rose-500">DAY 0{day.dayNumber}</span>
+                        <span className="text-[10px] text-slate-400 font-mono font-bold">{dayCompletedCount}/{day.events.length}</span>
+                      </div>
+                      <span className="text-sm font-black">{day.date.split(" ")[0]}</span>
+                      {isActive && <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-400 to-sky-400 rounded-b-2xl" />}
+                    </button>
+                  );
+                })}
+
+                {/* Pocket Food Bonus Tab */}
+                <button
+                  onClick={() => setActiveTab("pocket-food")}
+                  className={`flex flex-col px-5 py-3 rounded-2xl min-w-[130px] transition border text-left shrink-0 relative ${
+                    activeTab === "pocket-food"
+                      ? "bg-white border-amber-300 text-slate-900 shadow-md shadow-amber-100"
+                      : "bg-white/60 border-slate-200 text-slate-500 hover:bg-white hover:text-slate-800"
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full mb-0.5">
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-600">BONUS</span>
+                    <span className="text-[10px] text-slate-400 font-mono font-bold">{pocketFoods.filter(f => f.checked).length}/{pocketFoods.length}</span>
+                  </div>
+                  <span className="text-sm font-black flex items-center gap-1 text-amber-700">
+                    <IconUtensils className="w-3.5 h-3.5 text-amber-500" /> 口袋美食
+                  </span>
+                  {activeTab === "pocket-food" && <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-orange-400 rounded-b-2xl" />}
+                </button>
+              </div>
+
+              {/* Day View */}
+              {activeTab.startsWith("day-") && (
+                <div className="space-y-6">
+                  
+                  {/* Day Overview Banner */}
+                  <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <span className="text-xs font-extrabold text-rose-500 uppercase tracking-widest">{currentDayData.date}</span>
+                    <h3 className="text-lg font-black text-slate-800 mt-0.5">{currentDayData.title}</h3>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{currentDayData.summary}</p>
+                  </div>
+
+                  {/* Category Filters & Search */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                      {Object.keys(CATEGORY_CONFIG).map((catKey) => {
+                        const cat = CATEGORY_CONFIG[catKey];
+                        const IconComponent = cat.icon;
+                        const isSelected = selectedCategory === catKey;
+
+                        return (
+                          <button
+                            key={catKey}
+                            onClick={() => setSelectedCategory(catKey)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition border shrink-0 ${
+                              isSelected 
+                                ? cat.color + " shadow-sm border-transparent" 
+                                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            <IconComponent className="w-3.5 h-3.5" />
+                            <span>{cat.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="relative min-w-[180px]">
+                      <input 
+                        type="text"
+                        placeholder="搜尋景點或美食..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-400 shadow-sm"
+                      />
+                      <IconSearch className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    </div>
+                  </div>
+
+                  {/* Timeline Cards with Auto Google Maps Buttons */}
+                  <div className="relative pl-6 space-y-4 before:absolute before:left-[11px] before:top-3 before:bottom-3 before:w-[2px] before:bg-gradient-to-b before:from-rose-300 before:via-sky-300 before:to-transparent">
+                    {filteredEvents.map((ev) => {
+                      const catConfig = CATEGORY_CONFIG[ev.category] || CATEGORY_CONFIG.Spot;
+                      const IconComponent = catConfig.icon;
+                      const isExpanded = expandedCards[ev.id];
+                      const mapsUrl = getGoogleMapsUrl(ev.title);
+
+                      return (
+                        <div key={ev.id} className="relative group">
+                          
+                          {/* Checkbox Toggle */}
+                          <button 
+                            onClick={() => toggleEventCompleted(currentDayData.dayNumber, ev.id)}
+                            className={`absolute -left-[31px] top-4 w-6 h-6 rounded-full flex items-center justify-center transition-all z-10 ${
+                              ev.completed 
+                                ? "bg-rose-500 text-white shadow-md scale-110" 
+                                : "bg-white border-2 border-slate-300 text-transparent hover:border-rose-400"
+                            }`}
+                          >
+                            <IconCheck className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Event Card */}
+                          <div className={`bg-white border rounded-2xl p-4 md:p-5 transition-all shadow-sm ${
+                            ev.completed ? "border-slate-200 bg-slate-50/60 opacity-75" : "border-slate-200 hover:border-rose-300"
+                          }`}>
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1 space-y-1.5">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="flex items-center gap-1 text-[11px] font-mono font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
+                                    <IconClock className="w-3 h-3" />
+                                    {ev.time}
+                                  </span>
+
+                                  <span className={`flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${catConfig.badgeBg}`}>
+                                    <IconComponent className="w-3 h-3" />
+                                    {catConfig.name}
+                                  </span>
+                                </div>
+
+                                <h4 className={`text-base font-extrabold text-slate-800 ${ev.completed ? "line-through text-slate-400" : ""}`}>
+                                  {ev.title}
+                                </h4>
+
+                                <div className="flex items-center gap-1 text-xs text-slate-500">
+                                  <IconMapPin className="w-3.5 h-3.5 text-rose-500" />
+                                  <span>{ev.location}</span>
+                                </div>
+                              </div>
+
+                              <button
+                                onClick={() => toggleExpandCard(ev.id)}
+                                className="p-2 text-slate-400 hover:text-slate-600 rounded-xl"
+                              >
+                                {isExpanded ? <IconChevronUp className="w-4 h-4" /> : <IconChevronDown className="w-4 h-4" />}
+                              </button>
+                            </div>
+
+                            {ev.notes && (
+                              <p className="text-xs text-slate-600 mt-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed">
+                                💡 <span className="font-bold text-rose-600">行程小備忘：</span> {ev.notes}
+                              </p>
+                            )}
+
+                            {/* Google Maps Auto Navigation Button */}
+                            <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
+                              <span className="text-[10px] text-slate-400 font-medium">即時點擊進行語音導航</span>
+                              
+                              <a 
+                                href={mapsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition hover:shadow"
+                              >
+                                <IconNavigation className="w-3.5 h-3.5" />
+                                <span>Google 地圖導航</span>
+                                <IconExternalLink className="w-3 h-3 opacity-80" />
+                              </a>
+                            </div>
+
+                          </div>
+
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </div>
+              )}
+
+              {}
+              {activeTab === "pocket-food" && (
+                <div className="space-y-6">
+                  <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-5 shadow-sm flex items-center gap-3">
+                    <div className="p-3 bg-white/20 rounded-xl">
+                      <IconUtensils className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold">澳門口袋美食清單</h3>
+                      <p className="text-xs opacity-90 mt-0.5">點選口袋名店直接發起 Google 地圖導航！</p>
+                    </div>
+                  </div>
+
+                  {/* Add Custom Pocket Food Form */}
+                  <form onSubmit={handleAddPocketFood} className="flex gap-2 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                    <input 
+                      type="text" 
+                      placeholder="店名 (例如: 義順鮮奶)..."
+                      value={newFoodName}
+                      onChange={(e) => setNewFoodName(e.target.value)}
+                      className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-amber-400"
+                    />
+                    <input 
+                      type="text" 
+                      placeholder="備註必點美食..."
+                      value={newFoodDesc}
+                      onChange={(e) => setNewFoodDesc(e.target.value)}
+                      className="hidden md:block flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-amber-400"
+                    />
+                    <button 
+                      type="submit"
+                      className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1"
+                    >
+                      <IconPlus className="w-3.5 h-3.5" /> 新增
+                    </button>
+                  </form>
+
+                  {/* Food Items Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {pocketFoods.map((item) => {
+                      const foodMapsUrl = getGoogleMapsUrl(item.name);
+
+                      return (
+                        <div 
+                          key={item.id}
+                          onClick={() => togglePocketFood(item.id)}
+                          className={`p-4 rounded-2xl border transition cursor-pointer flex flex-col justify-between gap-3 ${
+                            item.checked ? "bg-slate-100 border-slate-200 opacity-60" : "bg-white border-slate-200 hover:border-amber-300"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`mt-0.5 w-5 h-5 rounded-lg flex items-center justify-center border ${
+                              item.checked ? "bg-amber-500 border-amber-500 text-white" : "border-slate-300 text-transparent"
+                            }`}>
+                              <IconCheck className="w-3.5 h-3.5" />
+                            </div>
+
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <h4 className={`text-sm font-bold ${item.checked ? "line-through text-slate-400" : "text-slate-800"}`}>
+                                  {item.name}
+                                </h4>
+                                <button 
+                                  onClick={(e) => deletePocketFood(item.id, e)}
+                                  className="text-slate-300 hover:text-rose-500 p-1"
+                                >
+                                  <IconTrash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                {item.desc}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t border-slate-100 flex justify-end">
+                            <a 
+                              href={foodMapsUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1 rounded-xl border border-amber-200"
+                            >
+                              <IconNavigation className="w-3 h-3 text-amber-600" />
+                              <span>Google 導航 {item.name}</span>
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+            </section>
+
+            {}
+            <aside className="lg:col-span-4 space-y-6">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
+                <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                  <IconAward className="w-4 h-4 text-rose-500" />
+                  <span>行程打卡概況</span>
+                </h3>
+
+                <div className="grid grid-cols-2 gap-3 text-center">
+                  <div className="bg-slate-50 border border-slate-100 p-3 rounded-xl">
+                    <span className="text-2xl font-black text-rose-500 font-mono">{allEvents.length}</span>
+                    <p className="text-[10px] text-slate-500 mt-0.5">總規劃景點美食</p>
+                  </div>
+                  <div className="bg-slate-50 border border-slate-100 p-3 rounded-xl">
+                    <span className="text-2xl font-black text-sky-500 font-mono">{completedEvents.length}</span>
+                    <p className="text-[10px] text-slate-500 mt-0.5">已造訪打卡</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-200 rounded-2xl p-5 space-y-3">
+                <div className="flex items-center gap-2 text-sky-800">
+                  <IconMap className="w-5 h-5 text-sky-600" />
+                  <h3 className="text-sm font-extrabold">澳門全區地圖導航</h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  點擊行程卡片右下角「Google 地圖導航」按鈕，系統會自動生成並開啟 Google 地圖！
+                </p>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=Macau+Attractions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs rounded-xl shadow-sm transition"
+                >
+                  <span>開啟 Google 地圖澳門全區</span>
+                  <IconExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </aside>
+
+          </main>
+
+          {}
+          {showTipsModal && (
+            <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-lg overflow-hidden shadow-xl animate-fadeIn">
+                <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                  <div className="flex items-center gap-2">
+                    <IconInfo className="w-5 h-5 text-sky-500" />
+                    <h3 className="font-extrabold text-slate-800 text-base">澳門旅遊實用貼士</h3>
+                  </div>
+                  <button onClick={() => setShowTipsModal(false)} className="text-slate-400 hover:text-slate-700">
+                    <IconX className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="p-5 space-y-4 text-xs text-slate-600">
+                  <div>
+                    <h4 className="font-bold text-sky-700">💰 貨幣與支付</h4>
+                    <p>澳門可直接使用港幣 (HKD) 或澳門幣 (MOP)，大部分店家支援電子支付 (AlipayHK / 微信支付 / 信用卡)。</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-amber-700">🚌 交通建議</h4>
+                    <p>善用各大酒店免費「發財車」（接駁巴士），可輕鬆搭乘往返機場、關閘與路氹金光大道。</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-rose-700">🔌 插頭規格</h4>
+                    <p>採用英規 G 型三孔插頭（與香港相同），電壓為 220V。</p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                  <button 
+                    onClick={() => setShowTipsModal(false)}
+                    className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl text-xs transition"
+                  >
+                    關閉
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    const rootElement = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<App />);
+  </script>
+</body>
+</html>
